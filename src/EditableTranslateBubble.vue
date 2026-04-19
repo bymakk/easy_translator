@@ -89,14 +89,14 @@
 
 <script setup>
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
-import { languageOptions, suggestEditableTargetLang } from './languages'
+import { languageOptions, suggestTargetLangFromText } from './languages'
 
 const props = defineProps({
   selectedText: { type: String, default: '' },
   onApply: { type: Function, default: undefined },
 })
 
-const targetLang = ref(suggestEditableTargetLang(props.selectedText))
+const targetLang = ref(suggestTargetLangFromText(props.selectedText))
 const open = ref(false)
 const selectWrapRef = ref(null)
 const searchInputRef = ref(null)
@@ -128,8 +128,9 @@ const canApply = computed(() => Boolean(props.selectedText?.trim()) && !submitti
 watch(
   () => props.selectedText,
   (t) => {
-    targetLang.value = suggestEditableTargetLang(t ?? '')
+    targetLang.value = suggestTargetLangFromText(t ?? '')
   },
+  { immediate: true },
 )
 
 watch(open, (isOpen) => {

@@ -123,7 +123,11 @@
 
 <script setup>
 import { computed, nextTick, onUnmounted, ref, watch } from 'vue'
-import { detectedLanguageLabels, languageOptions, normalizeLangCode } from './languages'
+import {
+  getDetectedLanguageLabel,
+  languageOptions,
+  suggestTargetLangFromText,
+} from './languages'
 import { translateFree } from './services/googleTranslate'
 
 const props = defineProps({
@@ -136,7 +140,7 @@ const sourceLangCode = ref(props.embedded ? '' : 'en')
 
 const popupVisible = ref(true)
 
-const targetLang = ref('ru')
+const targetLang = ref(props.embedded ? suggestTargetLangFromText(props.selectedText) : 'ru')
 const open = ref(false)
 const selectWrapRef = ref(null)
 const searchInputRef = ref(null)
@@ -159,14 +163,7 @@ onUnmounted(() => {
 })
 
 const sourceLangLabel = computed(() => {
-  const code = sourceLangCode.value
-  if (!code) return 'Авто'
-  const short = normalizeLangCode(code)
-  const detectedLabel = detectedLanguageLabels[short]
-  if (detectedLabel) return detectedLabel
-  const hit = languageOptions.find((o) => o.value === code || o.value === short)
-  if (hit) return hit.label
-  return short.toUpperCase()
+  return getDetectedLanguageLabel(sourceLangCode.value)
 })
 
 const filteredOptions = computed(() => {
@@ -272,7 +269,13 @@ async function runTranslate() {
 watch(
   () => [props.embedded, props.selectedText],
   () => {
-    if (props.embedded) void runTranslate()
+    if (!props.embedded) return
+    const suggestedTarget = suggestTargetLangFromText(props.selectedText)
+    if (targetLang.value !== suggestedTarget) {
+      targetLang.value = suggestedTarget
+      return
+    }
+    void runTranslate()
   },
   { immediate: true },
 )

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Translator Popup",
-  "version": "0.0.18",
-  "version_name": "0.18",
+  "version": "0.0.19",
+  "version_name": "0.19",
   "description": "Перевод выделенного текста (публичный endpoint Google translate, без своего сервера)",
   "host_permissions": [
     "https://translate.googleapis.com/*"
