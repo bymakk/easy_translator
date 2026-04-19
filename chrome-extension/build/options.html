@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Переводчик — о расширении</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 560px;
+        margin: 24px;
+        line-height: 1.5;
+      }
+      a {
+        color: #06c;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Translator Popup</h1>
+    <p>
+      Перевод идёт напрямую из расширения на
+      <code>translate.googleapis.com</code> с параметром
+      <code>client=gtx</code> (тот же класс неофициальных запросов, что используют
+      простые клиенты перевода). Отдельный сервер и API-ключ не нужны.
+    </p>
+    <p>
+      Это не официальный платный Cloud Translation API: формат ответа и доступность
+      могут измениться. Виджет «Google Website Translator» из
+      <a href="https://github.com/solodev/google-translator" target="_blank" rel="noreferrer"
+        >solodev/google-translator</a
+      >
+      подключает другой сценарий (скрипт <code>element.js</code> для всей страницы); здесь
+      используется лёгкий запрос только для выделенного текста.
+    </p>
+  </body>
+</html>

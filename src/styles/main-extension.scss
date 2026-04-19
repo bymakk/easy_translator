@@ -1,0 +1,6 @@
+// Сборка content-script: без @font-face — шрифты подключаются через FontFace в src/content/loadGoogleSans.ts
+@use 'root';
+@use 'base';
+@use 'translator-popup';
+@use 'editable-translate-bubble';
+@use 'select-menu';

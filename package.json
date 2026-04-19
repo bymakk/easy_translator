@@ -1,0 +1,24 @@
+{
+  "name": "translator-theme",
+  "private": true,
+  "version": "0.0.18",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "bump": "node scripts/bump-version.mjs",
+    "build": "npm run bump && vite build",
+    "build:extension": "npm run bump && vite build --config vite.extension.config.js",
+    "build:extension:pack": "vite build --config vite.extension.config.js",
+    "release": "npm run bump && vite build && vite build --config vite.extension.config.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@fontsource/google-sans": "^5.2.1",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "sass": "^1.86.3",
+    "vite": "^6.2.5"
+  }
+}
