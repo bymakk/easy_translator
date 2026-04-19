@@ -40,21 +40,42 @@ type EditableSelectionData = {
   snapshot: EditableSnapshot
 }
 
+type PopupAnchor =
+  | {
+      kind: 'page-selection'
+      range: Range
+    }
+  | {
+      kind: 'editable-range'
+      range: Range
+    }
+  | {
+      kind: 'editable-control'
+      element: TextControl
+    }
+
 let hostEl: HTMLDivElement | null = null
+let popupWrap: HTMLDivElement | null = null
 let app: ReturnType<typeof createApp> | null = null
 let removeDocDown: (() => void) | null = null
 let removeEscape: (() => void) | null = null
+let removeReposition: (() => void) | null = null
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
+let activeAnchor: PopupAnchor | null = null
 
 function tearDown() {
   removeDocDown?.()
   removeDocDown = null
   removeEscape?.()
   removeEscape = null
+  removeReposition?.()
+  removeReposition = null
   app?.unmount()
   app = null
   hostEl?.remove()
   hostEl = null
+  popupWrap = null
+  activeAnchor = null
 }
 
 function isTextControl(el: Element | null): el is TextControl {
@@ -87,6 +108,68 @@ function placeInlinePopup(x: number, y: number) {
   const left = Math.max(pad, Math.min(x - w / 2, window.innerWidth - w - pad))
   const top = Math.max(pad, Math.min(y, window.innerHeight - h - pad))
   return { left, top, width: w }
+}
+
+function getRangeAnchorRect(range: Range): DOMRect | null {
+  const root = range.commonAncestorContainer
+  if (!root.isConnected) return null
+
+  const rects = Array.from(range.getClientRects())
+  const rect = rects[rects.length - 1] ?? range.getBoundingClientRect()
+  if (!rect) return null
+  return rect
+}
+
+function getPopupAnchorRect(anchor: PopupAnchor): DOMRect | null {
+  try {
+    if (anchor.kind === 'editable-control') {
+      if (!anchor.element.isConnected) return null
+      return anchor.element.getBoundingClientRect()
+    }
+    return getRangeAnchorRect(anchor.range)
+  } catch {
+    return null
+  }
+}
+
+function updatePopupPosition() {
+  if (!popupWrap || !activeAnchor) return
+
+  const rect = getPopupAnchorRect(activeAnchor)
+  if (!rect) return
+
+  let nextPosition
+  if (activeAnchor.kind === 'page-selection') {
+    nextPosition = placePopup(rect.left, rect.bottom + 8)
+  } else {
+    nextPosition = placeInlinePopup(rect.left + rect.width / 2, rect.bottom + 8)
+  }
+
+  popupWrap.style.left = `${nextPosition.left}px`
+  popupWrap.style.top = `${nextPosition.top}px`
+  popupWrap.style.width = `${nextPosition.width}px`
+  popupWrap.style.maxWidth = 'calc(100vw - 16px)'
+}
+
+function attachRepositionListeners() {
+  const onReposition = () => updatePopupPosition()
+  document.addEventListener('scroll', onReposition, true)
+  window.addEventListener('resize', onReposition)
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', onReposition)
+    window.visualViewport.addEventListener('scroll', onReposition)
+  }
+
+  removeReposition = () => {
+    document.removeEventListener('scroll', onReposition, true)
+    window.removeEventListener('resize', onReposition)
+
+    if (window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', onReposition)
+      window.visualViewport.removeEventListener('scroll', onReposition)
+    }
+  }
 }
 
 function mountHostShell(left: number, top: number, width: number) {
@@ -127,6 +210,7 @@ function mountHostShell(left: number, top: number, width: number) {
   shadow.appendChild(wrap)
   wrap.appendChild(mount)
   document.documentElement.appendChild(hostEl)
+  popupWrap = wrap
   return mount
 }
 
@@ -150,6 +234,7 @@ function attachDismissListeners() {
 async function mountComponent(
   component: object,
   props: Record<string, unknown>,
+  anchor: PopupAnchor,
   left: number,
   top: number,
   width: number
@@ -165,11 +250,21 @@ async function mountComponent(
   const mount = mountHostShell(left, top, width)
   app = createApp(component, props)
   app.mount(mount)
+  activeAnchor = anchor
   attachDismissListeners()
+  attachRepositionListeners()
+  updatePopupPosition()
 }
 
-async function mountPopup(selectedText: string, anchorLeft: number, anchorBottom: number) {
-  const { left, top, width } = placePopup(anchorLeft, anchorBottom + 8)
+async function mountPopup(selectedText: string, range: Range) {
+  const rect = getRangeAnchorRect(range)
+  if (!rect) return
+
+  const anchor: PopupAnchor = {
+    kind: 'page-selection',
+    range,
+  }
+  const { left, top, width } = placePopup(rect.left, rect.bottom + 8)
   await mountComponent(
     App,
     {
@@ -177,6 +272,7 @@ async function mountPopup(selectedText: string, anchorLeft: number, anchorBottom
       selectedText,
       onVanish: tearDown,
     },
+    anchor,
     left,
     top,
     width
@@ -242,7 +338,29 @@ function replaceEditableSelection(snapshot: EditableSnapshot, translatedText: st
 }
 
 async function mountEditablePopup(data: EditableSelectionData) {
-  const { left, top, width } = placeInlinePopup(data.anchorLeft, data.anchorBottom + 8)
+  let anchor: PopupAnchor
+  let anchorLeft = data.anchorLeft
+  let anchorBottom = data.anchorBottom
+
+  if (data.snapshot.kind === 'text-control') {
+    anchor = {
+      kind: 'editable-control',
+      element: data.snapshot.element,
+    }
+  } else {
+    anchor = {
+      kind: 'editable-range',
+      range: data.snapshot.range,
+    }
+
+    const rect = getRangeAnchorRect(data.snapshot.range)
+    if (rect) {
+      anchorLeft = rect.left + rect.width / 2
+      anchorBottom = rect.bottom
+    }
+  }
+
+  const { left, top, width } = placeInlinePopup(anchorLeft, anchorBottom + 8)
   await mountComponent(
     EditableTranslateBubble,
     {
@@ -253,6 +371,7 @@ async function mountEditablePopup(data: EditableSelectionData) {
         tearDown()
       },
     },
+    anchor,
     left,
     top,
     width
@@ -346,7 +465,7 @@ function handleSelection(e: MouseEvent) {
     const rect = rects[rects.length - 1] ?? range.getBoundingClientRect()
     if (rect.width === 0 && rect.height === 0) return
 
-    void mountPopup(text, rect.left, rect.bottom)
+    void mountPopup(text, range.cloneRange())
   }, 120)
 }
 
