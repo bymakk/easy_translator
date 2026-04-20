@@ -1,4 +1,7 @@
-/**
+/*! Easy Translator © 2026 bymakk (https://github.com/bymakk/easy_translator)
+ * Proprietary software. Copying, forking, or commercial use is prohibited.
+ * See LICENSE: https://github.com/bymakk/easy_translator/blob/main/LICENSE
+ *//**
 * @vue/shared v3.5.32
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
 * @license MIT
