@@ -45,3 +45,4 @@ id_ed25519*
 /*.png
 /*.jpg
 /*.jpeg
+!preview.png
