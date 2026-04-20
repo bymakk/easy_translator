@@ -1,5 +1,28 @@
-Copyright (c) 2024 bymakk. All rights reserved.
+Copyright (c) 2024–2026 bymakk (https://github.com/bymakk). All rights reserved.
 
-This software is provided as-is for personal use only.
-Redistribution, modification, or commercial use is prohibited
-without explicit written permission from the author.
+PROPRIETARY SOFTWARE LICENSE
+
+This software, Easy Translator, including all source code, compiled binaries,
+assets, and associated documentation (collectively, the "Software"), is the
+exclusive property of the author (bymakk).
+
+PERMISSIONS
+You are granted a limited, non-exclusive, non-transferable right to:
+- Download and install the Software for personal, non-commercial use only.
+
+RESTRICTIONS
+You may NOT, without prior written permission from the author:
+- Copy, reproduce, or redistribute the Software or any part of it.
+- Modify, adapt, translate, or create derivative works based on the Software.
+- Fork, clone, or mirror this repository for public or commercial purposes.
+- Reverse-engineer, decompile, or disassemble the compiled files.
+- Use the Software or any portion of it to build a competing product or service.
+- Sublicense, sell, rent, lease, or otherwise transfer rights to the Software.
+- Remove or alter any copyright, trademark, or proprietary notices.
+
+DISCLAIMER
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR
+OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
+
+For permissions beyond personal use, contact: https://github.com/bymakk
