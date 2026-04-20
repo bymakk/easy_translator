@@ -1,4 +1,47 @@
-node_modules
-dist
+# ── Dependencies ──────────────────────────────────────────────────────────────
+node_modules/
+backend/node_modules/
+
+# ── Build artefacts (local only) ──────────────────────────────────────────────
+dist/
+backend/dist/
+
+# ── Source code — not published ───────────────────────────────────────────────
+src/
+backend/src/
+backend/tsconfig.json
+backend/package.json
+backend/package-lock.json
+backend/deploy/
+scripts/
+assets/
+index.html
+vite.config.js
+vite.extension.config.js
+version-state.json
+package.json
+package-lock.json
+
+# ── chrome-extension source (build/ folder IS committed) ──────────────────────
+chrome-extension/manifest.json
+chrome-extension/options.html
+
+# ── Secrets / keys ────────────────────────────────────────────────────────────
+backend/.env
+backend/.env.*
+!backend/.env.example
+ssh-key*/
+*.pem
+id_rsa*
+id_ed25519*
+*.key
+
+# ── OS / tooling ──────────────────────────────────────────────────────────────
 .DS_Store
 *.local
+.playwright-mcp/
+
+# ── Screenshots / prototyping ─────────────────────────────────────────────────
+/*.png
+/*.jpg
+/*.jpeg

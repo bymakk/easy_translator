@@ -1,11 +1,20 @@
 {
   "manifest_version": 3,
   "name": "Translator Popup",
-  "version": "0.0.21",
-  "version_name": "0.21",
+  "version": "0.0.59",
+  "version_name": "0.59",
   "description": "Перевод выделенного текста (публичный endpoint Google translate, без своего сервера)",
+  "permissions": [
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "host_permissions": [
-    "https://translate.googleapis.com/*"
+    "https://translate.googleapis.com/*",
+    "https://ai.translate.obfsn.ru/*",
+    "https://api.github.com/*"
   ],
   "web_accessible_resources": [
     {
