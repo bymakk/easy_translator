@@ -60,7 +60,7 @@ Google и Yandex доступны **без регистрации**. С акка
 2. Зарегистрируйтесь или войдите в аккаунт.
 3. Переключите режим перевода на **AI** (иконка в правом верхнем углу попапа).
 
-> При нехватке токенов расширение автоматически переключается на Google Translate.
+> Используется модель **`grok-4.20-0309`**. При нехватке токенов расширение автоматически переключается на Google Translate.
 
 ## 🔀 Google vs Yandex vs Grok
 
@@ -72,9 +72,9 @@ Google и Yandex доступны **без регистрации**. С акка
 <thead>
 <tr>
   <th align="left">Оригинал</th>
-  <th align="center">🔵 Google</th>
-  <th align="center">🔴 Yandex</th>
-  <th align="center">🤖 Grok</th>
+  <th align="center">🔵 Google Translate</th>
+  <th align="center">🔴 Yandex Translate</th>
+  <th align="center">🤖 Grok 4.20</th>
 </tr>
 </thead>
 <tbody>
