@@ -3,7 +3,7 @@
   "name": "Translator Popup",
   "version": "0.0.64",
   "version_name": "0.63",
-  "description": "Перевод выделенного текста (публичный endpoint Google translate, без своего сервера)",
+  "description": "Перевод выделенного текста на любой странице. Google, Yandex и AI-перевод.",
   "permissions": [
     "storage"
   ],
