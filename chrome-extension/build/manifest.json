@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Translator Popup",
-  "version": "0.0.90",
-  "version_name": "0.90",
+  "version": "0.0.91",
+  "version_name": "0.91",
   "description": "Перевод выделенного текста на любой странице. Google, Yandex и AI-перевод.",
   "permissions": [
     "storage"
