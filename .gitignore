@@ -42,6 +42,9 @@ id_ed25519*
 .playwright-mcp/
 bundle-stats.html
 
+# ── Landing page (deployed separately to easytranslator.ru) ───────────────────
+web/
+
 # ── Screenshots / prototyping ─────────────────────────────────────────────────
 /*.png
 /*.jpg
