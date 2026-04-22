@@ -40,6 +40,7 @@ id_ed25519*
 .DS_Store
 *.local
 .playwright-mcp/
+bundle-stats.html
 
 # ── Screenshots / prototyping ─────────────────────────────────────────────────
 /*.png
