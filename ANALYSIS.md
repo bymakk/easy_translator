@@ -115,21 +115,20 @@
 
 **Оценка усилий:** 1–2 дня + прогон всех persist-кейсов (pinned bubble, font size, result size, inline provider, main provider, report buffer).
 
-### M3. Валидация `initialAuthState` / `parseJsonSafe` (Zod или ручной guard)
+### ✅ M3. Валидация `initialAuthState` / session payload (ручной guard) — ВЫПОЛНЕНО
 
-**Где:** `src/App.vue:423–426` (`initialAuthState: { type: Object, default: undefined }`), `src/services/backendApi.ts:75–83` (`JSON.parse(text) as T`).
+**Было:** `initialAuthState` и `session.authState` из `chrome.storage.local` шли в UI через наивный spread-merge — битый тип поля (`aiAvailability: "bogus"`) протекал в `aiState`.
 
-**Что сейчас:** Полное доверие форме входного объекта. При расхождении — `Cannot read property 'isAuthenticated' of undefined` где-то глубоко в UI через 10 стек-кадров.
+**Сделано:**
+- В `src/services/translatorProtocol.ts` добавлены guard'ы `isAiAvailability`, `isTranslationMode` и sanitizer'ы `sanitizeQuota`, `sanitizeReports`, `sanitizeAuthState` (per-field fallback к guest default, никогда не бросают).
+- `sessionStore.loadStoredSession` теперь пропускает хранимый `authState` через sanitizer вместо spread-merge.
+- `App.vue`: `sanitizeAuthState` применяется к `props.initialAuthState` при монтировании и к `nextState` внутри `applyAuthState` (тот принимает `unknown`, потому что приходит из IPC-границы с `any`).
+- `backendApi.ts`: `assertSessionPayload` на `/v1/auth/login`, `/register/verify`, `/refresh` — если сервер вернёт payload без `accessToken`/`refreshToken`/`accessTokenExpiresAt` → `BackendApiError('…', 'MALFORMED_RESPONSE', 200)` вместо тихой порчи auth state.
+- `errorCodes.ts`: новый код `MALFORMED_RESPONSE` (502) — тост показывает понятное сообщение вместо fallthrough в generic 500.
 
-**Импакт:**
-- Типичный кейс: поменяли форму `AuthState` в backend, выкатили новый backend раньше расширения — у всех текущих пользователей в `chrome.storage.local` лежит **старая** форма → `aiState` получит `undefined` поле → UI либо сломается, либо тихо покажет гостя вместо залогиненного.
-- Сейчас — не наблюдается, потому что `AuthState` стабилен давно.
+**Zod решили не подключать** — раздул бы бандл на ~8–12 KB gzip; ручной guard покрыл все известные формы.
 
-**Риски рефакторинга:**
-- Низкие. Добавить функцию `isValidAuthState(x): x is AuthState` в `translatorProtocol.ts`, использовать в `loadStoredSession` и `App.vue` props-default.
-- Zod раздует бандл на ~8–12 KB gzip — не нужен; хватит ручного guard'а.
-
-**Оценка усилий:** 2–3 часа.
+**Бэкап:** тег `backup/post-m3`.
 
 ---
 
@@ -200,10 +199,10 @@
 | ~~H3~~ | ~~Единый watch в App.vue~~ | ✅ Сделано | — | — |
 | M1 | `viewportRectFrom` | Чище код, редкие позиционные баги | Средний (CKE/TinyMCE тесты) | 1 день |
 | M2 | Общий `chromeStorage.ts` | Единый child-frame fallback | Средний (много persist-точек) | 1–2 дня |
-| M3 | Guard для `initialAuthState` / API | Защита от рассинхрона с backend | Низкий | 2–3 часа |
+| ~~M3~~ | ~~Guard для `initialAuthState` / API~~ | ✅ Сделано | — | — |
 | L1–L8 | Архитектура/стиль | Нулевой или отрицательный | — | — |
 
-**Рекомендация:** брать по одному пункту H-блока за релиз (~~H3~~ → M3 → H1 → H2), не смешивая. M-блок — когда будет окно без бизнес-задач. L-блок — не трогать без повода.
+**Рекомендация:** брать по одному пункту H-блока за релиз (~~H3~~ → ~~M3~~ → H1 → H2), не смешивая. M-блок — когда будет окно без бизнес-задач. L-блок — не трогать без повода.
 
 
 Релиз 1 — H3: схлопывание двух watch в App.vue (первым)
