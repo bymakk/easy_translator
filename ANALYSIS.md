@@ -95,19 +95,19 @@
 
 **Бэкап:** тег `backup/post-m1`.
 
-### M2. Общий слой `chromeStorage.ts`
+### ✅ M2. Общий слой `chromeStorage.ts` — ВЫПОЛНЕНО
 
-**Где:** `src/services/reportBuffer.ts:30–68`, `src/services/sessionStore.ts:59–175`, `src/content/powerToggle.ts:22–51`.
+**Было:** Четыре файла дублировали одни и те же три концерна: availability-guard, drain `chrome.runtime.lastError`, iframe write-suppression. Копии разошлись — `historyStore.ts` вообще не дренировал `lastError` (шумно в iframe-контекстах), а `powerToggle.ts` не уважал `disableStorageWrites`.
 
-**Что сейчас:** Три независимые реализации: (а) sessionStore для `storage.local` c child-frame fallback через `chrome.runtime.sendMessage`; (б) reportBuffer поверх `storage.session`; (в) powerToggle — опять поверх `storage.local`. У каждого свой `hasSessionStorage`/`tryGet`.
+**Сделано:**
+- Новый `src/services/chromeStorage.ts` — экспорты `{local,session}{Get,Set,Remove}` и `disableStorageWrites()`. Единый источник правды, без зависимостей.
+- `sessionStore` реэкспортирует `disableStorageWrites`, чтобы call-site'ы в `content/` и `background/` не менялись.
+- `historyStore` и `powerToggle` теперь оба дренируют `lastError` и уважают iframe-guard — тихое улучшение без смены поведения для top-frame.
+- `reportBuffer` потерял ~60 строк boilerplate.
 
-**Импакт:** Баг, найденный в одной копии, не попадает в другие. Конкретно: child-frame fallback (когда контент-скрипт выполняется в `about:blank` iframe без доступа к `chrome.storage`) сделан только в `sessionStore.ts`. Если завтра `reportBuffer` понадобится работать из iframe — он молча сломается.
+**Эффект по бандлу:** `content.js` 228.08 → 227.40 KB (-0.68 KB), `background.js` 31.18 → 30.80 KB (-0.38 KB) за счёт дедупликации.
 
-**Риски рефакторинга:**
-- **Средние.** `storage.session` и `storage.local` — два разных API с разной политикой trusted/untrusted contexts. Единый `storageGet<T>(area, key)` легко сделать, а вот унификация child-frame fallback (там асинхронный round-trip через `chrome.runtime`) — аккуратно.
-- Регрессии могут быть незаметны: например, настройки размера шрифта сохраняются, а восстанавливаются из устаревшего кэша.
-
-**Оценка усилий:** 1–2 дня + прогон всех persist-кейсов (pinned bubble, font size, result size, inline provider, main provider, report buffer).
+**Бэкап:** тег `backup/post-m2`.
 
 ### ✅ M3. Валидация `initialAuthState` / session payload (ручной guard) — ВЫПОЛНЕНО
 
@@ -192,11 +192,11 @@
 | H2 | Разделение `content.js` | 40–100 KB на вкладку, TTI | Высокий (MV3 + shadow DOM) | 3–5 дней |
 | ~~H3~~ | ~~Единый watch в App.vue~~ | ✅ Сделано | — | — |
 | ~~M1~~ | ~~`viewportRectFrom`~~ | ✅ Сделано | — | — |
-| M2 | Общий `chromeStorage.ts` | Единый child-frame fallback | Средний (много persist-точек) | 1–2 дня |
+| ~~M2~~ | ~~Общий `chromeStorage.ts`~~ | ✅ Сделано | — | — |
 | ~~M3~~ | ~~Guard для `initialAuthState` / API~~ | ✅ Сделано | — | — |
 | L1–L8 | Архитектура/стиль | Нулевой или отрицательный | — | — |
 
-**Рекомендация:** брать по одному пункту H-блока за релиз (~~H3~~ → ~~M3~~ → ~~M1~~ → M2 → H1 → H2), не смешивая. L-блок — не трогать без повода.
+**Рекомендация:** брать по одному пункту H-блока за релиз (~~H3~~ → ~~M3~~ → ~~M1~~ → ~~M2~~ → H1 → H2), не смешивая. L-блок — не трогать без повода.
 
 
 Релиз 1 — H3: схлопывание двух watch в App.vue (первым)
