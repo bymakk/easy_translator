@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Переводчик — о расширении</title>
+    <title>Easy Translator — о расширении</title>
     <style>
       body {
         font-family: system-ui, sans-serif;
@@ -17,12 +17,13 @@
     </style>
   </head>
   <body>
-    <h1>Translator Popup</h1>
+    <h1>Easy Translator</h1>
     <p>
       Перевод идёт напрямую из расширения на
-      <code>translate.googleapis.com</code> с параметром
-      <code>client=gtx</code> (тот же класс неофициальных запросов, что используют
-      простые клиенты перевода). Отдельный сервер и API-ключ не нужны.
+      <code>translate-pa.googleapis.com</code> через неофициальный HTML-endpoint
+      Google Translate. Если он временно недоступен, расширение откатывается на
+      старый публичный endpoint <code>translate.googleapis.com</code> с
+      <code>client=gtx</code>. Отдельный сервер и аккаунт Google не нужны.
     </p>
     <p>
       Это не официальный платный Cloud Translation API: формат ответа и доступность

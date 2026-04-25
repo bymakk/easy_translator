@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Translator</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #2c2c2c;
+        --panel: #3a3a3a;
+        --border: #2d2d2d;
+        --text: #e8e8e8;
+        --muted: #9a9a9a;
+        --accent: #43b581;
+        --accent-hover: #57c793;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+      }
+      body {
+        min-width: 300px;
+        background: var(--bg);
+        color: var(--text);
+        font: 13px/1.4 'Google Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      }
+      .popup {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand__logo {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .brand__name {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .row + .row {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--border);
+      }
+      .row__text {
+        min-width: 0;
+      }
+      .label {
+        font-weight: 500;
+        font-size: 13px;
+      }
+      .hint {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      /* Switch */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 38px;
+        height: 22px;
+        flex-shrink: 0;
+      }
+      .switch input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+      .switch .track {
+        position: absolute;
+        inset: 0;
+        background: #5a5a5a;
+        border-radius: 999px;
+        transition: background-color 0.15s ease;
+      }
+      .switch .thumb {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 18px;
+        height: 18px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        transition: transform 0.15s ease;
+      }
+      .switch input:checked ~ .track {
+        background: var(--accent);
+      }
+      .switch input:checked ~ .thumb {
+        transform: translateX(16px);
+      }
+      .switch input:focus-visible ~ .track {
+        box-shadow: 0 0 0 2px rgba(67, 181, 129, 0.4);
+      }
+
+      /* Radio modes */
+      .mode-list {
+        display: grid;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .mode {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition:
+          background-color 0.12s ease,
+          border-color 0.12s ease;
+      }
+      .mode:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .mode input {
+        margin: 2px 0 0 0;
+        accent-color: var(--accent);
+        flex-shrink: 0;
+      }
+      .mode:has(input:checked) {
+        background: rgba(67, 181, 129, 0.1);
+        border-color: rgba(67, 181, 129, 0.45);
+      }
+      .mode__title {
+        font-weight: 500;
+        font-size: 13px;
+      }
+      .mode__desc {
+        color: var(--muted);
+        font-size: 11px;
+        margin-top: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="popup">
+      <section class="brand" aria-label="Easy Translator">
+        <img class="brand__logo" src="icons/logo-extension-square.png" alt="" />
+        <div class="brand__name">Easy Translator</div>
+      </section>
+
+      <section class="panel" aria-label="Основные настройки">
+        <div class="row">
+          <div class="row__text">
+            <div class="label">Переводчик включён</div>
+            <div class="hint">Показывать перевод на страницах</div>
+          </div>
+          <label class="switch">
+            <input id="enabledToggle" type="checkbox" />
+            <span class="track"></span>
+            <span class="thumb"></span>
+          </label>
+        </div>
+
+        <div class="row">
+          <div class="row__text" style="width: 100%">
+            <div class="label">Когда запускать перевод</div>
+            <div class="hint">Выберите привычный способ вызова</div>
+            <div class="mode-list" id="triggerModeGroup">
+              <label class="mode">
+                <input type="radio" name="triggerMode" value="mouseup" />
+                <span>
+                  <div class="mode__title">Сразу после выделения</div>
+                  <div class="mode__desc">Показ по отпусканию кнопки мыши</div>
+                </span>
+              </label>
+              <label class="mode">
+                <input type="radio" name="triggerMode" value="dblclick" />
+                <span>
+                  <div class="mode__title">По двойному клику</div>
+                  <div class="mode__desc">Только по double click</div>
+                </span>
+              </label>
+              <label class="mode">
+                <input type="radio" name="triggerMode" value="shift" />
+                <span>
+                  <div class="mode__title">С Shift при выделении</div>
+                  <div class="mode__desc">Удерживайте Shift и выделяйте текст</div>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
