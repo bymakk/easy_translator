@@ -118,54 +118,7 @@ AI-режим — **полностью по желанию**. Google и Yandex �
 
 ---
 
-<table>
-<thead>
-<tr>
-  <th align="left">Оригинал</th>
-  <th align="center">🔵 Google Translate</th>
-  <th align="center">🔴 Yandex Translate</th>
-  <th align="center">🤖 Grok 4.20</th>
-</tr>
-</thead>
-<tbody>
 
-<tr>
-  <td><em>"omg bby come to pvt rn im horny af, tip 50 tks for c2c"</em><br><sub>Cam/adult-platform сленг</sub></td>
-  <td align="center">О боже, детка, приходи в личные сообщения прямо сейчас, я ужасно возбуждена, чаевые 50, спасибо за общение.</td>
-  <td align="center">боже мой, приходи в pvt RN, я возбужден, даю чаевые в размере 50 турецких крон за c2c.</td>
-  <td align="center">✅ боже малышка давай в приват прямо сейчас, я пиздец как возбуждён, кинь 50 монет за камеру к камере</td>
-</tr>
-
-<tr>
-  <td><em>"when you do jumping jacks do you keep the handbra? break a leg tonight bby"</em><br><sub>Смешанный сленг + идиома</sub></td>
-  <td align="center">Когда делаешь прыжки на месте, ты сохраняешь фиксатор для рук? Удачи тебе сегодня вечером, детка!</td>
-  <td align="center">когда ты делаешь прыжки, ты держишься за поясницу? сломаешь ногу сегодня вечером, дбя</td>
-  <td align="center">✅ когда делаешь прыжки-звёздочку, ты продолжаешь прикрывать грудь руками? ни пуха ни пера вечером, малышка</td>
-</tr>
-
-<tr>
-  <td><em>"spilling the tea on that sus af situationship, red flag energy fr"</em><br><sub>Gen-Z сленг</sub></td>
-  <td align="center">Раскрываю подробности этих подозрительных отношений, это явно тревожный сигнал.</td>
-  <td align="center">проливая чай на этот сус из-за ситуации, red flag energy fr</td>
-  <td align="center">✅ сливаю всю правду про эти пиздец подозрительные непонятные отношения, от них красными флагами воняет по-честному</td>
-</tr>
-
-<tr>
-  <td><em>"I'm dead, this girl slays fr fr, no cap bussin bestie"</em><br><sub>Разговорный интернет-сленг</sub></td>
-  <td align="center">Я в шоке, эта девчонка просто бомба, честное слово, без шуток, лучшая подруга!</td>
-  <td align="center">Я мертв, эта девушка убивает меня, я твой лучший друг.</td>
-  <td align="center">✅ я сдох, эта тёлка реально жжёт, без базара, она огонь, подруга</td>
-</tr>
-
-<tr>
-  <td><em>"he fumbled the bag and now everyone is roasting him"</em><br><sub>Переносное значение</sub></td>
-  <td align="center">Он уронил сумку, и теперь все его высмеивают.</td>
-  <td align="center">он пошарил в пакете, и теперь все его поджаривают</td>
-  <td align="center">✅ он упустил свой шанс, и теперь все над ним стебутся</td>
-</tr>
-
-</tbody>
-</table>
 
 ---
 
