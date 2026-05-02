@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Easy Translator",
-  "version": "0.0.143",
-  "version_name": "0.0.143",
+  "version": "0.0.144",
+  "version_name": "0.0.144",
   "description": "Перевод выделенного текста на любой странице. Google, Yandex и AI-перевод.",
   "icons": {
     "16": "icons/icon16.png",
