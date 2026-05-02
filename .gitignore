@@ -27,6 +27,7 @@ chrome-extension/manifest.json
 chrome-extension/options.html
 
 # ── Secrets / keys ────────────────────────────────────────────────────────────
+.env
 backend/.env
 backend/.env.*
 !backend/.env.example
