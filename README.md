@@ -5,7 +5,7 @@
 Chrome-расширение: перевод выделенного текста на любой странице с поддержкой **Google**, **Yandex** и AI-перевода (**Grok**).  
 Google и Yandex доступны **без регистрации**. С аккаунтом — Grok и автоматический откат на Google при нехватке токенов.
 
-<img src="https://raw.githubusercontent.com/bymakk/easy_translator/main/docs/readme-preview.png" alt="Easy Translator — окно перевода" width="1002" />
+<img src="https://raw.githubusercontent.com/bymakk/easy_translator/main/docs/readme-preview-0.0.143.webp" alt="Easy Translator — окно перевода (v0.0.143)" width="1002" />
 
 </div>
 
