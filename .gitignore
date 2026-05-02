@@ -39,8 +39,7 @@ bundle-stats.html
 # ── Landing page (deployed separately to easytranslator.ru) ───────────────────
 web/
 
-# ── Screenshots / prototyping ─────────────────────────────────────────────────
+# ── Screenshots / prototyping (корневые картинки не в репо) ───────────────────
 /*.png
 /*.jpg
 /*.jpeg
-!preview.png
