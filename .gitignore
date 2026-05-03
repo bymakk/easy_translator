@@ -36,6 +36,12 @@ id_ed25519*
 .playwright-mcp/
 bundle-stats.html
 
+# ── Cursor IDE (локальные правила агента, не публикуются) ─────────────────────
+.cursor/
+
+# ── Релизные ZIP в корне (генерируются scripts/pack-extension-zip.mjs) ───────
+/easy_translator_v*.zip
+
 # ── Landing page (deployed separately to easytranslator.ru) ───────────────────
 web/
 
