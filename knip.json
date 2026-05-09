@@ -1,0 +1,26 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "index.html",
+    "src/main.js",
+    "src/background/index.ts",
+    "src/content/index.ts",
+    "src/popup/index.ts",
+    "scripts/bump-version.mjs",
+    "scripts/pack-extension-zip.mjs"
+  ],
+  "ignore": [
+    "chrome-extension/build/**",
+    "backend/**",
+    "dist/**",
+    "web/**"
+  ],
+  "ignoreDependencies": ["ts-prune"],
+  "vite": {
+    "config": ["vite.config.js", "vite.extension.config.js"]
+  },
+  "ignoreExportsUsedInFile": {
+    "type": true,
+    "interface": true
+  }
+}
