@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Easy Translator",
-  "version": "0.0.215",
-  "version_name": "0.0.215",
+  "version": "0.0.216",
+  "version_name": "0.0.216",
   "description": "Перевод выделенного текста на любой странице. Google, Yandex и AI-перевод.",
   "icons": {
     "16": "icons/icon16.png",
@@ -19,8 +19,7 @@
   },
   "permissions": [
     "clipboardWrite",
-    "storage",
-    "tabs"
+    "storage"
   ],
   "background": {
     "service_worker": "background.js",
